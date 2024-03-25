@@ -18,7 +18,7 @@ class SearchView: UIView {
         label.text = "What to eat\ntoday?"
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = UIFont(name: "MPLUS1p-Medium", size: 22)
+        label.font = UIFont(name: "Poppins-Medium", size: 22)
         return label
     }()
     
@@ -26,7 +26,7 @@ class SearchView: UIView {
     
     let segmentedControlBackground: UIView = {
            let view = UIView()
-           view.backgroundColor = UIColor.orange // Предполагаем, что это светло-жёлтый цвет
+           view.backgroundColor = UIColor.customLightOrange // Предполагаем, что это светло-жёлтый цвет
            view.layer.cornerRadius = 26
            return view
        }()
@@ -36,8 +36,8 @@ class SearchView: UIView {
     let chefsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Chefs", for: .normal)
-        button.setTitleColor(UIColor.orange, for: .normal)
-        button.backgroundColor = UIColor.gray
+        button.setTitleColor(UIColor.customLightOrange, for: .normal)
+        button.backgroundColor = UIColor.customOrange
         button.layer.cornerRadius = 17
         //button.addTarget(self, action: #selector(segmentChanged(_:)), for: .touchUpInside)
         return button
@@ -46,8 +46,9 @@ class SearchView: UIView {
     let recipesButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Recipes", for: .normal)
-        button.setTitleColor(UIColor.orange, for: .normal)
-        button.backgroundColor = UIColor.lightGray // Здесь будет светло-жёлтый цвет
+        button.setTitleColor(UIColor.customOrange, for: .normal)
+        
+        button.backgroundColor = UIColor.customLightOrange // Здесь будет светло-жёлтый цвет
         button.layer.cornerRadius = 17
         //button.addTarget(self, action: #selector(segmentChanged(_:)), for: .touchUpInside)
         return button
@@ -60,7 +61,7 @@ class SearchView: UIView {
         view.backgroundColor = .white
         view.layer.cornerRadius = 22
         view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.orange.cgColor
+        view.layer.borderColor = UIColor.customOrange.cgColor
         //view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
         return view
     }()
@@ -94,6 +95,7 @@ class SearchView: UIView {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
+        setupButtonActions()
     }
     
     required init?(coder: NSCoder) {
@@ -101,6 +103,40 @@ class SearchView: UIView {
     }
     
     // MARK: - Setup
+    
+    private func setupButtonActions() {
+        chefsButton.addTarget(self, action: #selector(toggleChefButtonColor), for: .touchUpInside)
+        recipesButton.addTarget(self, action: #selector(toggleRecipesButtonColor), for: .touchUpInside)
+    }
+    
+    @objc private func toggleChefButtonColor() {
+        if recipesButton.backgroundColor == .customLightOrange {
+            chefsButton.backgroundColor = .customLightOrange
+            chefsButton.setTitleColor(.black, for: .normal)
+            recipesButton.backgroundColor = .customOrange
+            recipesButton.setTitleColor(.white, for: .normal)
+        } else {
+            chefsButton.backgroundColor = .customOrange
+            chefsButton.setTitleColor(.white, for: .normal)
+            recipesButton.backgroundColor = .customLightOrange
+            recipesButton.setTitleColor(.black, for: .normal)
+        }
+    }
+    
+    @objc private func toggleRecipesButtonColor() {
+        if chefsButton.backgroundColor == .customLightOrange {
+            chefsButton.backgroundColor = .customOrange
+            chefsButton.setTitleColor(.white, for: .normal)
+            recipesButton.backgroundColor = .customLightOrange
+            recipesButton.setTitleColor(.black, for: .normal)
+        } else {
+            chefsButton.backgroundColor = .customLightOrange
+            chefsButton.setTitleColor(.black, for: .normal)
+            recipesButton.backgroundColor = .customOrange
+            recipesButton.setTitleColor(.white, for: .normal)
+        }
+    }
+
     
     private func setupViews() {
         addSubview(questionLabel)
